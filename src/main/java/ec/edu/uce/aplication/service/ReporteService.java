@@ -12,8 +12,11 @@ import jakarta.transaction.Transactional;
 public class ReporteService {
     @Inject
     private ReporteRepositoryImpl reporteRepositoryImpl;
-    
+     @MedirTiempo
      public void guardar(Reporte reporte){
+        String nombrehilo = Thread.currentThread().getName();
+        System.out.println("nombre el hilo ReporteService" + nombrehilo);
+        System.out.println("ID:" + Thread.currentThread().threadId());
         this.reporteRepositoryImpl.persist(reporte);
      }
  

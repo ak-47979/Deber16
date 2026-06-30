@@ -10,10 +10,14 @@ import jakarta.transaction.Transactional;
 public class MailService {
     @Inject
     private MailRepositoryImpl mailRepositoryImpl;
-
-     public void guardar(Mail mail){
+    
+    @MedirTiempo
+    public void guardar(Mail mail){
+        String nombrehilo = Thread.currentThread().getName();
+        System.out.println("nombre el hilo MailService" + nombrehilo);
+        System.out.println("ID:" + Thread.currentThread().threadId());
         this.mailRepositoryImpl.persist(mail);
-     }
+    }
     public Mail buscarId(Integer id){
       // return this.mailRepositoryImpl.findById(id);
       return Mail.findById(id);
