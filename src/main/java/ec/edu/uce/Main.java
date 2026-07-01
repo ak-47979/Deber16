@@ -3,37 +3,54 @@ package ec.edu.uce;
 import java.time.LocalDate;
 
 import ec.edu.uce.aplication.service.FacturaService;
+import ec.edu.uce.aplication.service.PedidoService;
 import ec.edu.uce.domain.model.Factura;
+import ec.edu.uce.domain.model.Pedido;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
 import jakarta.inject.Inject;
+
 @QuarkusMain
 public class Main {
-   public static void main(String[] args) {
-        Quarkus.run(App.class,args);
-   }
-   public static class App implements QuarkusApplication{
-    @Inject
-        private FacturaService facturaService;
-    @Override
-    public int run(String... args) throws Exception {
-        
+    public static void main(String[] args) {
+        Quarkus.run(App.class, args);
+    }
 
-        System.out.println("prueba quarkus");
-       Factura factura = new Factura();
-        factura.setFecha(LocalDate.now());
-        factura.setNumero("0001-0004");
-        factura.setRuc("1753021564321564");
+    public static class App implements QuarkusApplication {
 
-        facturaService.guardar(factura);
-        Factura fac =facturaService.buscarId(1);
-        System.out.println(fac.toString());
-        return 0;
+        @Inject
+        private PedidoService pedidoService;
 
-        
-       
-   }
+        @Override
+        public int run(String... args) throws Exception {
 
-}
+            Thread hilo = Thread.currentThread();
+
+            long inicio = System.currentTimeMillis();
+
+            System.out.println("Método principal ejecutado en hilo: " + hilo.getName());
+
+            System.out.println("ID del hilo principal: " + hilo.threadId());
+
+            Pedido pedido = new Pedido();
+
+            pedido.setId(1);
+
+            pedido.setCliente("Juan");
+
+            pedido.setTotal(100);
+
+            pedidoService.guardar(pedido);
+            pedidoService.procesarPedido(pedido);
+
+            long fin = System.currentTimeMillis();
+
+            System.out.println("\nTiempo método principal: " + (fin - inicio) + " ms");
+
+            return 0;
+
+        }
+
+    }
 }
