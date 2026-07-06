@@ -3,6 +3,7 @@ package ec.edu.uce;
 import java.time.LocalDate;
 
 import ec.edu.uce.aplication.service.FacturaService;
+import ec.edu.uce.aplication.service.FacturaServiceParalelo;
 import ec.edu.uce.domain.model.Factura;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
@@ -16,6 +17,8 @@ public class Main {
    public static class App implements QuarkusApplication{
     @Inject
         private FacturaService facturaService;
+        @Inject
+        private FacturaServiceParalelo facturaServiceParalelo;
     @Override
     public int run(String... args) throws Exception {
         
@@ -24,17 +27,19 @@ public class Main {
         System.out.println("ID:" + Thread.currentThread().threadId());
 
         
-       Factura factura = new Factura();
+        Factura factura = new Factura();
         factura.setFecha(LocalDate.now());
         factura.setNumero("0001-0004");
         factura.setRuc("1753021564321564");
 
-        facturaService.guardarF(factura);
-        Factura fac =facturaService.buscarId(1);
-        System.out.println(fac.toString());
+        //facturaService.guardarF(factura);
+        this.facturaServiceParalelo.guardar(factura);
+        
+        
+     
+       
         return 0;
 
-        //en el metodo guardarR y guardar mail ponga un medidor de tiempo con interceptor
        
    }
 

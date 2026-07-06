@@ -10,25 +10,14 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
-@Transactional
+
 @ApplicationScoped
 public class FacturaService {
 
     @Inject
     private FacturaRespositoryImpl facturaRespositoryImpl;
 
-    @MedirTiempo
-    public void guardar(Factura factura){
-         String nombrehilo = Thread.currentThread().getName();
-        System.out.println("nombre el hilo FacturaService" + nombrehilo);
-        System.out.println("ID:" + Thread.currentThread().threadId());
-        this.facturaRespositoryImpl.persist(factura);
-    }
-    public Factura buscarId(Integer id){
-       // return this.facturaRespositoryImpl.findById(id);
-        return Factura.findById(id);
-    }
-
+    
    
 
     @Inject
@@ -38,6 +27,7 @@ public class FacturaService {
     public ReporteService reporteService;
 
     @MedirTiempo
+    @Transactional
     public void guardarF(Factura factura){
          String nombrehilo = Thread.currentThread().getName();
         System.out.println("nombre el hilo FacturaService" + nombrehilo);
