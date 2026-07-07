@@ -3,6 +3,7 @@ package ec.edu.uce;
 import java.time.LocalDate;
 
 import ec.edu.uce.aplication.service.FacturaService;
+import ec.edu.uce.aplication.service.FacturaServiceCompletableFuture;
 import ec.edu.uce.aplication.service.FacturaServiceParalelo;
 import ec.edu.uce.domain.model.Factura;
 import io.quarkus.runtime.Quarkus;
@@ -19,6 +20,9 @@ public class Main {
         private FacturaService facturaService;
         @Inject
         private FacturaServiceParalelo facturaServiceParalelo;
+
+        @Inject
+        private FacturaServiceCompletableFuture facturaServiceCompletableFuture;
     @Override
     public int run(String... args) throws Exception {
         
@@ -34,6 +38,7 @@ public class Main {
 
         //facturaService.guardarF(factura);
         this.facturaServiceParalelo.guardar(factura);
+       //this.facturaServiceCompletableFuture.guardarF(factura);
         
         
      

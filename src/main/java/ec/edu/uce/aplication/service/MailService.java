@@ -1,25 +1,31 @@
 package ec.edu.uce.aplication.service;
-import ec.edu.uce.domain.model.Mail;
-import ec.edu.uce.infraestructure.repository.MailRepositoryImpl;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 
+ 
+import ec.edu.uce.domain.model.Mail;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
+ 
 @ApplicationScoped
 @Transactional
 public class MailService {
-    @Inject
-    private MailRepositoryImpl mailRepositoryImpl;
-    
+ 
     @MedirTiempo
-    public void guardar(Mail mail){
-        String nombrehilo = Thread.currentThread().getName();
-        System.out.println("nombre el hilo MailService" + nombrehilo);
-        System.out.println("ID:" + Thread.currentThread().threadId());
-        this.mailRepositoryImpl.persist(mail);
+    public void guardar(Mail mail) {
+ 
+        String nombreHilo = Thread.currentThread().getName();
+        System.out.println("nombre del hilo MAILSERVICE:" + nombreHilo);
+        System.out.println("ID: " + Thread.currentThread().threadId());
+ 
+        mail.persist();
+ 
     }
-    public Mail buscarId(Integer id){
-      // return this.mailRepositoryImpl.findById(id);
-      return Mail.findById(id);
+ 
+    public Mail buscarMailPorId(Integer id) {
+ 
+        return Mail.findById(id);
+ 
     }
+
+    
 }
+ 

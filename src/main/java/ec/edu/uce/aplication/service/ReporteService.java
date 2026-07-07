@@ -9,6 +9,8 @@ import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 @Transactional
+
+@MedirTiempo
 public class ReporteService {
     @Inject
     private ReporteRepositoryImpl reporteRepositoryImpl;

@@ -3,6 +3,7 @@ package ec.edu.uce.aplication.service;
 
 
 import java.time.LocalDate;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -28,9 +29,15 @@ private FacturaRespositoryImpl facturaRespositoryImpl;
 
     @Inject
     public MailService mailService;
+    
+    @Inject
+    public MailServiceTarea mailServiceTarea;
+
+    @Inject
+    private ReporteServiceTarea reporteServiceTarea;
   
     @MedirTiempo
-    public void guardar(Factura factura){
+    public void guardar(Factura factura) throws ExecutionException, InterruptedException{
          String nombrehilo = Thread.currentThread().getName();
         System.out.println("nombre el hilo FacturaServiceParalela" + nombrehilo);
         System.out.println("ID:" + Thread.currentThread().threadId());
@@ -46,10 +53,15 @@ private FacturaRespositoryImpl facturaRespositoryImpl;
         repo.setFecha(LocalDate.now());       
        // this.reporteService.guardar(repo);
        //se envia a guardar el reporte a ejecutar en forma paralela
-       ReporteServiceTarea reporteServiceTarea = new ReporteServiceTarea(repo,reporteService);
+       this.reporteServiceTarea.setReporte(repo);
+      // ReporteServiceTarea reporteServiceTarea = new ReporteServiceTarea(repo,reporteService);
       
        Future<?>  repoFuture= executorService.submit(reporteServiceTarea);
 
+   
+
+
+       //-------------------------------
         Mail mail = new Mail();
         mail.setRemitente("Andy");
         mail.setDestinatario("Paul");
@@ -57,17 +69,19 @@ private FacturaRespositoryImpl facturaRespositoryImpl;
         mail.setFecha(LocalDate.now());
         //this.mailService.guardar(mail);
         //se envia a guardar el mail a ejecutar en forma paralela
-        MailServiceTarea mailServiceTarea = new MailServiceTarea(mail , mailService);
-        mailServiceTarea.setMail(mail);
+       
+        //MailServiceTarea mailServiceTarea = new MailServiceTarea(mail );
+        this.mailServiceTarea.setMail(mail);
 
         Future<?>  mailFuture= executorService.submit(mailServiceTarea);
-        //Cerra el proceso de ejcucion, indicando que no se va a enviar mas tareas
-         executorService.shutdown();
-       try {
-            Thread.sleep(20000);
-       } catch (Exception e) {
-        
-       }
+       
+          //tiene que terminarse la tarea del reporte
+        repoFuture.get();
+         //tiene que terminarse la tarea del reporte
+        mailFuture.get();
+           //Cerra el proceso de ejcucion, indicando que no se va a enviar mas tareas
+        executorService.shutdown();
+      
        
 
     }

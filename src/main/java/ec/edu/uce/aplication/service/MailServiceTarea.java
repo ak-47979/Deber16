@@ -1,19 +1,19 @@
 package ec.edu.uce.aplication.service;
 
 import ec.edu.uce.domain.model.Mail;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
 
-
+@Dependent
 public class MailServiceTarea implements Runnable{
 
-    
+    @Inject
     private MailService mailService; 
 
     private Mail mail;
     //metodo implementado mediante la interface runable 
 
-    public MailServiceTarea(Mail mail, MailService mailService) {
-        this.mail = mail;
-    }
+  
     public MailServiceTarea(){
 
     }
@@ -29,9 +29,6 @@ public class MailServiceTarea implements Runnable{
         return mailService;
     }
 
-    public void setMailService(MailService mailService) {
-        this.mailService = mailService;
-    }
 
     public Mail getMail() {
         return mail;
@@ -40,6 +37,7 @@ public class MailServiceTarea implements Runnable{
     public void setMail(Mail mail) {
         this.mail = mail;
     }
+
 
 
 
