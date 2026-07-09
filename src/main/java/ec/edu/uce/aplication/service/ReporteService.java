@@ -1,6 +1,8 @@
 package ec.edu.uce.aplication.service;
 
 
+import java.util.List;
+
 import ec.edu.uce.domain.model.Reporte;
 import ec.edu.uce.infraestructure.repository.ReporteRepositoryImpl;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -21,7 +23,14 @@ public class ReporteService {
         System.out.println("ID:" + Thread.currentThread().threadId());
         this.reporteRepositoryImpl.persist(reporte);
      }
- 
+     
+     @Auditar
+     public void guardarLis( List<Reporte>reporte){
+        String nombrehilo = Thread.currentThread().getName();
+        System.out.println("nombre el hilo ReporteService" + nombrehilo);
+        System.out.println("ID:" + Thread.currentThread().threadId());
+        this.reporteRepositoryImpl.persist(reporte);
+     }
      public Reporte buscarId(Integer id){
         //return this.reporteRepositoryImpl.findById(id);
         return Reporte.findById(id);

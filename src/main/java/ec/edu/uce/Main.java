@@ -1,11 +1,14 @@
 package ec.edu.uce;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import ec.edu.uce.aplication.service.FacturaService;
 import ec.edu.uce.aplication.service.FacturaServiceCompletableFuture;
 import ec.edu.uce.aplication.service.FacturaServiceParalelo;
+import ec.edu.uce.aplication.service.ReporteService;
 import ec.edu.uce.domain.model.Factura;
+import ec.edu.uce.domain.model.Reporte;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
@@ -17,7 +20,7 @@ public class Main {
    }
    public static class App implements QuarkusApplication{
     @Inject
-        private FacturaService facturaService;
+        private ReporteService reporteService;
         @Inject
         private FacturaServiceParalelo facturaServiceParalelo;
 
@@ -35,12 +38,15 @@ public class Main {
         factura.setFecha(LocalDate.now());
         factura.setNumero("0001-0004");
         factura.setRuc("1753021564321564");
-
-        //facturaService.guardarF(factura);
-        this.facturaServiceParalelo.guardar(factura);
-       //this.facturaServiceCompletableFuture.guardarF(factura);
-        
-        
+        List<Reporte> lista = new ArrayList<>();
+        for(int i=0; i<10 ; i++){
+     Reporte re = new Reporte();
+     re.setTitulo("repo1");
+     re.setAutor("autor1");
+     re.setFecha(LocalDate.now());
+     lista.add(re);
+}
+        this.reporteService.guardarLis(lista);
      
        
         return 0;
