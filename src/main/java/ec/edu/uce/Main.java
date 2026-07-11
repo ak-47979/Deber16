@@ -39,14 +39,16 @@ public class Main {
         factura.setNumero("0001-0004");
         factura.setRuc("1753021564321564");
         List<Reporte> lista = new ArrayList<>();
-        for(int i=0; i<10 ; i++){
+        for(int i=0; i<100000 ; i++){
      Reporte re = new Reporte();
      re.setTitulo("repo1");
      re.setAutor("autor1");
      re.setFecha(LocalDate.now());
      lista.add(re);
-}
-        this.reporteService.guardarLis(lista);
+}     
+     // this.reporteService.guardarLis(lista);
+          System.out.println("Segundo metodo");
+      this.reporteService.guardarLisParalelo(lista);
      
        
         return 0;

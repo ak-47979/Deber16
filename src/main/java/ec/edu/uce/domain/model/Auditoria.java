@@ -23,7 +23,7 @@ public class Auditoria {
     @Column(name = "audi_nombre_metodo")
     private String nombreMetodo;
 
-    @Column(name = "audi_argumentos",length = 300)
+    @Column(name = "audi_argumentos", columnDefinition = "TEXT")
     private String argumentos;
 
     @Column(name = "audi_fecha_hora_ejecucion")
