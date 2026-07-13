@@ -16,7 +16,7 @@ public class Auditoria {
 
     @Id
     @SequenceGenerator(name = "seq_auditoria_generador", sequenceName = "seq_auditoria",allocationSize = 1)
-    @GeneratedValue(generator = "seq_auditoria_generador",strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "seq_auditoria_generador",strategy = GenerationType.SEQUENCE)
     @Column(name = "audi_id")
     private Long id;
 

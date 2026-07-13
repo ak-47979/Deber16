@@ -1,5 +1,6 @@
 package ec.edu.uce;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,54 +8,58 @@ import java.util.List;
 import ec.edu.uce.aplication.service.FacturaServiceCompletableFuture;
 import ec.edu.uce.aplication.service.FacturaServiceParalelo;
 import ec.edu.uce.aplication.service.ReporteService;
+import ec.edu.uce.aplication.service.VentaService;
 import ec.edu.uce.domain.model.Factura;
 import ec.edu.uce.domain.model.Reporte;
+import ec.edu.uce.domain.model.Venta;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
 import jakarta.inject.Inject;
+
 @QuarkusMain
 public class Main {
-   public static void main(String[] args) {
-        Quarkus.run(App.class,args);
-   }
-   public static class App implements QuarkusApplication{
-    @Inject
+    public static void main(String[] args) {
+        Quarkus.run(App.class, args);
+    }
+
+    public static class App implements QuarkusApplication {
+        @Inject
         private ReporteService reporteService;
-        @Inject
-        private FacturaServiceParalelo facturaServiceParalelo;
 
         @Inject
-        private FacturaServiceCompletableFuture facturaServiceCompletableFuture;
-    @Override
-    public int run(String... args) throws Exception {
-        
-        String nombrehilo = Thread.currentThread().getName();
-        System.out.println("nombre el hilo ReporteService" + nombrehilo);
-        System.out.println("ID:" + Thread.currentThread().threadId());
+        private VentaService ventaService;
 
-        
-        Factura factura = new Factura();
-        factura.setFecha(LocalDate.now());
-        factura.setNumero("0001-0004");
-        factura.setRuc("1753021564321564");
-        List<Reporte> lista = new ArrayList<>();
-        for(int i=0; i<100000 ; i++){
-     Reporte re = new Reporte();
-     re.setTitulo("repo1");
-     re.setAutor("autor1");
-     re.setFecha(LocalDate.now());
-     lista.add(re);
-}     
-     // this.reporteService.guardarLis(lista);
-          System.out.println("Segundo metodo");
-      this.reporteService.guardarLisParalelo(lista);
-     
-       
-        return 0;
+        @Override
+        public int run(String... args) throws Exception {
 
-       
-   }
+            System.out.println("Insertando 500 000 de ventas...");
+            List<Venta> lista = new ArrayList<>();
 
-}
+            for (int i = 1; i <= 500000; i++) {
+                
+                Venta venta = new Venta();
+                venta.setCliente("Andy");
+                venta.setFecha(LocalDate.now());
+                venta.setTotal(BigDecimal.valueOf(200));
+                lista.add(venta);
+
+            }
+            long inicio = System.currentTimeMillis();
+
+            System.out.println("Antes de guardar");
+            ventaService.guardarListaSecuencial(lista);
+            //ventaService.guardarListaParalela(lista);
+
+            System.out.println("Después de guardar");
+
+            long fin = System.currentTimeMillis();
+
+            System.out.println("Tiempo: " + (fin - inicio) + " ms");
+
+            return 0;
+
+        }
+
+    }
 }
