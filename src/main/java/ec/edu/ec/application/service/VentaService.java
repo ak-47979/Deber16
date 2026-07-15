@@ -1,5 +1,7 @@
 package ec.edu.ec.application.service;
 
+import java.util.List;
+
 import ec.edu.ec.domain.model.Reporte;
 import ec.edu.ec.domain.model.Venta;
 import ec.edu.ec.infraestructure.repository.VentaRepositoryImpl;
@@ -37,5 +39,9 @@ public class VentaService {
 
     public void eliminar(Integer id) {
         this.impl.deleteById(id);
+    }
+
+    public List<Venta> buscarTodos(){
+        return (List<Venta>) this.impl.findAll();
     }
 }
