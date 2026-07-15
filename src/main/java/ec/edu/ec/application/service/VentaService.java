@@ -42,6 +42,6 @@ public class VentaService {
     }
 
     public List<Venta> buscarTodos(){
-        return (List<Venta>) this.impl.findAll();
+        return this.impl.findAll().list();
     }
 }
